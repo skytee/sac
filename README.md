@@ -1,5 +1,6 @@
 # SAC - Serial Access Concentrator
 This project makes a number of devices that have a serial console port for management available over the network.
+Examples are network switch management ports, server management ports such as iLO or ILOM, SGI L1, etc.
 I like the Opengear CM7100 Console Servers. This is a budget alternative.
 
 ## Table of contents
@@ -54,7 +55,7 @@ The mapping of TCP port to serial port, along with baudrate and a comment, is st
 Clone this repository into the user's home directory, i.e. `~/sac`.
 
 ### Configure SSH Daemon
-Configure the SSH Daemon to listen on more ports. Edit /etc/sshd/sshd_config and add a number of ports like so:
+Configure the SSH Daemon to listen on more ports. Edit `/etc/sshd/sshd_config` and add a number of ports like so:
 ```
 Port 22
 Port 4000
@@ -72,7 +73,7 @@ The udev daemon helps getting a static mapping between selected TCP port and dev
 SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", ATTRS{serial}=="A9J7NQ5D", SYMLINK+="ttySLAB0"
 SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", ATTRS{serial}=="AL02JQ1T", SYMLINK+="ttySLAB1"
 ```
-* Edit `~/sac/70-serial-port.rules`: adapt the serial numbers to match your cables.
+* Edit `~/sac/70-serial-port.rules` to adapt the serial numbers to match your cables.
 * Copy the file `~/sac/70-serial-port.rules` to `/etc/udev/rules.d/`
 * Restart the udev daemon.
 
@@ -85,7 +86,7 @@ Hint: You will find the serial number of your USB-serial cables in `dmesg`. On p
 ```
 I like to mark my cables with the serial number, so I can map the device I plug them into.
 
-### Edit you serial port configuration
+### Edit your serial port configuration
 Edit `~/sac/serialports.json`.
 Configure the port, baudrate, and comment pointing to the device the serial port is connected to (e.g. server iLO, switch management port, SGI L1, etc.)
 
@@ -101,4 +102,8 @@ esac
 . ~/sac/connect.sh
 ```
 
-
+### Connect
+Connect via SSH to your device's serial port:
+```
+ssh -p4000 user@host
+```
