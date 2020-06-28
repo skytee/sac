@@ -1,0 +1,35 @@
+{
+	"ports": [
+			{
+					"port": "4000",
+					"device": "/dev/ttySLAB0",
+					"baudrate": "115200",
+					"comment": "#Q5D"
+			},
+			{
+					"port": "4001",
+					"device": "/dev/ttySLAB1",
+					"baudrate": "38400",
+					"comment": "#Q1T"
+			},
+			{
+					"port": "4002",
+					"device": "/dev/ttySLAB2",
+					"baudrate": "115200",
+					"comment": "#ZYS"
+			},
+			{
+					"port": "4003",
+					"device": "/dev/ttySLAB3",
+					"baudrate": "38400",
+					"comment": "#R1U"
+			},
+			{
+					"port": "4004",
+					"device": "/dev/ttySLAB4",
+					"baudrate": "115200",
+					"comment": "#7MW"
+			}
+	]
+}
+
