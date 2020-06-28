@@ -9,7 +9,7 @@
 
 declare -r PORT=$(echo $SSH_CLIENT | cut -f 3 -d ' ')
 if [ "${PORT:0:3}" == "400" ] ; then 
-	readarray -t PARAM < <(jq -r  ".ports[] | select(.port==\"$PORT\")| .device,.baudrate " ${HOME}/serialports.json)
+	readarray -t PARAM < <(jq -r  ".ports[] | select(.port==\"$PORT\")| .device,.baudrate " ${HOME}/sac/serialports.json)
 	[ ${#PARAM[@]} -eq 0 ] && exit 0;
 	exec screen "${PARAM[0]}" "${PARAM[1]}"
 fi

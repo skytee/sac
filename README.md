@@ -33,13 +33,13 @@ The mapping of TCP port to serial port, along with baudrate and a comment, is st
 			"port": "4000",
 			"device": "/dev/ttySLAB0",
 			"baudrate": "115200",
-			"comment": "#A9J7NQ5D iLO"
+			"comment": "#A9J7NQ5D Server iLO management interface"
 	},
 	{
 			"port": "4001",
 			"device": "/dev/ttySLAB1",
 			"baudrate": "115200",
-			"comment": "#AL02JQ1T iLO"
+			"comment": "#AL02JQ1T Switch management interface"
 	},
 ```
 
@@ -50,6 +50,8 @@ The mapping of TCP port to serial port, along with baudrate and a comment, is st
 
 ## Setup
 
+### Deploy source
+Clone this repository into the user's home directory, i.e. `~/sac`.
 
 ### Configure SSH Daemon
 Configure the SSH Daemon to listen on more ports. Edit /etc/sshd/sshd_config and add a number of ports like so:
@@ -70,16 +72,25 @@ The udev daemon helps getting a static mapping between selected TCP port and dev
 SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", ATTRS{serial}=="A9J7NQ5D", SYMLINK+="ttySLAB0"
 SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", ATTRS{serial}=="AL02JQ1T", SYMLINK+="ttySLAB1"
 ```
-* Copy the file `70-serial-port.rules` to `/etc/udev/rules.d/`
-* Edit t: adapt the serial numbers to match your cables
+* Edit `~/sac/70-serial-port.rules`: adapt the serial numbers to match your cables.
+* Copy the file `~/sac/70-serial-port.rules` to `/etc/udev/rules.d/`
 * Restart the udev daemon.
 
-### Copy script and configuration
-Copy `connect.sh` into a place where the user stores executables, e.g. `~/bin/connect.sh`
-Copy `serialports.json` to the user's home.
+Hint: You will find the serial number of your USB-serial cables in `dmesg`. On plug-in, the drivers will print a message like this:
+```
+[    2.006449] usb 3-1.7: New USB device found, idVendor=0403, idProduct=6001, bcdDevice= 6.00
+[    2.006454] usb 3-1.7: Product: FT232R USB UART
+[    2.006455] usb 3-1.7: Manufacturer: FTDI
+[    2.006457] usb 3-1.7: SerialNumber: A9P977MW
+```
+I like to mark my cables with the serial number, so I can map the device I plug them into.
+
+### Edit you serial port configuration
+Edit `~/sac/serialports.json`.
+Configure the port, baudrate, and comment pointing to the device the serial port is connected to (e.g. server iLO, switch management port, SGI L1, etc.)
 
 ### Add hook to bashrc
-Add the call to the script to the beginning of `~/.bashrc` (or equivalent), e.g.
+Add a call to `~/sac/connect.sh` to the beginning of `~/.bashrc` (or equivalent), e.g.
 ```
 # If not running interactively, don't do anything
 case $- in
@@ -87,7 +98,7 @@ case $- in
       *) return;;
 esac
 
-. ~/bin/connect.sh
+. ~/sac/connect.sh
 ```
 
 
